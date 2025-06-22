@@ -1,11 +1,11 @@
 package org.example
 
-class ConcreteObservable(
-    private val producer: Producer
-): Observable {
+class ConcreteObservable<P>(
+    private val producer: Producer<P>
+): Observable<P> {
 
-    var observer: Observer? = null
-    override fun subscribe(observer: Observer): Subscription {
+    private var observer: Observer<P>? = null
+    override fun subscribe(observer: Observer<P>): Subscription {
         val subscription = SimpleSubscription()
 
         println("In the subscribe of concrete observable")
@@ -13,9 +13,9 @@ class ConcreteObservable(
         /**
          * Wrapper observer to handle the unsubscribe logic
          */
-        val wrapperObserver = object :Observer{
+        val wrapperObserver = object :Observer<P> {
 
-            override fun <P> next(value: P) {
+            override fun  next(value: P) {
                if (isUnsubscribed()){
                    observer.next(value)
                }

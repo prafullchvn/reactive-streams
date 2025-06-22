@@ -1,13 +1,13 @@
 package org.example
 
 fun main() {
-    val concreteObservable = ConcreteObservable(NumberProducer())
-        .map<Int> {num -> num * 2  }
-        .map<Int> { num -> num  + 5 }// Mono.just(source)
+    val concreteObservable = ConcreteObservable<Int>(NumberAtIntervalProducer())
+        .map {num -> num * 2  }
+        .map { num -> num  + 5 }// Mono.just(source)
 
 
-    val logger = object : Observer {
-        override fun <P> next(value: P) {
+    val logger = object : Observer<Int> {
+        override fun next(value: Int) {
             println("Next: $value")
         }
 

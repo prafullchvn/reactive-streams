@@ -1,7 +1,7 @@
 package org.example
 
-interface  Observer {
-    fun<P> next(value: P)
+interface  Observer<P> {
+    fun next(value: P)
 
     fun error(throwable: Throwable)
 

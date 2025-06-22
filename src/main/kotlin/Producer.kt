@@ -1,5 +1,5 @@
 package org.example
 
-interface Producer {
-    fun produce(observer: Observer)
+interface Producer<P> {
+    fun produce(observer: Observer<P>)
 }

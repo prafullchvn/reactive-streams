@@ -1,16 +1,16 @@
 package org.example
 
-interface Observable {
-    fun subscribe(observer: Observer): Subscription
+interface Observable<P> {
+    fun subscribe(observer: Observer<P>): Subscription
 
-    fun <P> map(project: (P)->P): Observable{
+    fun <R>  map(project: (P)->R): Observable<R>{
         val sourceObservable = this
 
-        return object : Observable{
-            override fun subscribe(observer: Observer): Subscription {
-                val wrapperObserver = object : Observer {
-                    override fun <R> next(value: R) {
-                        val mappedValue = project(value as P)
+        return object : Observable<R>{
+            override fun subscribe(observer: Observer<R>): Subscription {
+                val wrapperObserver = object : Observer<P> {
+                    override fun next(value: P) {
+                        val mappedValue = project(value)
                         println("in the observable of map next $mappedValue")
                         observer.next(mappedValue)
                     }
@@ -29,3 +29,25 @@ interface Observable {
     }
 
 }
+
+/**
+override fun subscribe(observer: Observer): Subscription {
+val wrapperObserver = object : Observer {
+override fun next(value: P) {
+val mappedValue = project(value)
+println("in the observable of map next $mappedValue")
+observer.next(mappedValue)
+}
+
+override fun error(throwable: Throwable) {
+observer.error(throwable)
+}
+
+override fun complete() {
+observer.complete()
+}
+}
+return sourceObservable.subscribe(wrapperObserver)
+}
+
+ */
